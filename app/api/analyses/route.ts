@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { analyzeReviews } from "@/lib/ai/analyze-reviews";
 import { createAnalysisSchema } from "@/lib/ai/schemas";
 import { hasDatabaseUrl } from "@/lib/env";
-import { normalizeReviewInput } from "@/lib/sources";
+import { explainEmptyImport, normalizeReviewInput } from "@/lib/sources";
 import type { ApiResponse, AnalysisReport } from "@/types";
 
 export async function POST(request: Request) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         data: null,
-        error: "Provide pasted review text, CSV, or a reviews array",
+        error: explainEmptyImport(parsed.data),
       } satisfies ApiResponse<never>,
       { status: 400 },
     );
