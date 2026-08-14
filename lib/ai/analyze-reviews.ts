@@ -2,13 +2,14 @@ import type { AnalysisInsight, AnalysisReport, NormalizedReview } from "@/types"
 import { completeJson } from "@/lib/ai/client";
 import { ANALYSIS_SYSTEM_PROMPT, buildAnalysisUserPrompt } from "@/lib/ai/prompts";
 import { aiAnalysisSchema } from "@/lib/ai/schemas";
+import { formatScoreExplanation, scoreFromInsights } from "@/lib/ai/score";
 
 const COMPLAINT_PATTERNS: Array<{ title: string; terms: string[] }> = [
   { title: "Reliability and bugs", terms: ["bug", "crash", "broken", "error", "unreliable"] },
   { title: "Slow performance", terms: ["slow", "lag", "latency", "loading"] },
   { title: "Poor support", terms: ["support", "customer service", "no response"] },
   { title: "Pricing friction", terms: ["expensive", "price", "pricing", "cost", "overpriced"] },
-  { title: "Missing integrations", terms: ["integrat", "zapier", "api", "export"] },
+  { title: "Missing integrations", terms: ["integrat", "zapier", "slack"] },
 ];
 
 const REQUEST_PATTERNS: Array<{ title: string; terms: string[] }> = [
@@ -69,33 +70,26 @@ function heuristicInsights(reviews: NormalizedReview[]): AnalysisInsight[] {
   return insights.slice(0, 8);
 }
 
-function scoreFromInsights(insights: AnalysisInsight[], reviewCount: number): number {
-  const complaintWeight = insights
-    .filter((insight) => insight.kind === "complaint")
-    .reduce((sum, insight) => sum + (insight.frequency ?? 0), 0);
-  const demand = Math.min(25, reviewCount);
-  const pain = Math.min(40, Math.round(complaintWeight * 40));
-  return Math.min(100, 20 + demand + pain);
-}
-
 export async function analyzeReviews(
   title: string,
   reviews: NormalizedReview[],
 ): Promise<AnalysisReport> {
   const fallbackInsights = heuristicInsights(reviews);
+  const factors = scoreFromInsights(fallbackInsights, reviews.length);
+  const themeLine =
+    reviews.length === 0
+      ? "No reviews were provided."
+      : `Analyzed ${reviews.length} reviews. The strongest themes are ${
+          fallbackInsights
+            .slice(0, 3)
+            .map((insight) => insight.title)
+            .join(", ") || "unspecified"
+        }.`;
   const fallback: AnalysisReport = {
     title,
     status: "completed",
-    summary:
-      reviews.length === 0
-        ? "No reviews were provided."
-        : `Analyzed ${reviews.length} reviews. The strongest themes are ${
-            fallbackInsights
-              .slice(0, 3)
-              .map((insight) => insight.title)
-              .join(", ") || "unspecified"
-          }.`,
-    opportunityScore: scoreFromInsights(fallbackInsights, reviews.length),
+    summary: `${themeLine} ${formatScoreExplanation(factors, reviews.length)}`,
+    opportunityScore: factors.total,
     insights: fallbackInsights,
     reviewCount: reviews.length,
   };
