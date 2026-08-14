@@ -2,7 +2,18 @@
 
 An AI-powered competitor intelligence platform for SaaS founders.
 
-**Production URL:** pending Vercel import — follow [`market-intelligence/docs/SETUP.md`](market-intelligence/docs/SETUP.md) then replace this line with `https://<project>.vercel.app`.
+**Production URL:** not assigned yet. Import this repo in Vercel (see [SETUP.md](market-intelligence/docs/SETUP.md)). After the first production deploy, replace this line with `https://<project>.vercel.app` and set the GitHub repo homepage to the same URL.
+
+## Parallel workstream PRs
+
+Merge [PR #4](https://github.com/inavis-org/saas-opportunity-engine/pull/4) first (this branch). Then merge feature PRs; rebase if they conflict.
+
+| Workstream | PR |
+| --- | --- |
+| Wave 0 deploy + MVP | [#4](https://github.com/inavis-org/saas-opportunity-engine/pull/4) |
+| AI pipeline | [#5](https://github.com/inavis-org/saas-opportunity-engine/pull/5) |
+| Report UI | [#6](https://github.com/inavis-org/saas-opportunity-engine/pull/6) |
+| Review import, marketing, auth shell | Cloud Agents from this Wave 0 branch (draft PRs when they finish) |
 
 ## Stack
 
