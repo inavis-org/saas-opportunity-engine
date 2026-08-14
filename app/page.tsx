@@ -4,34 +4,18 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex min-h-full flex-col bg-background">
-      <header className="border-b">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">
-              Market Intelligence Platform
-            </p>
-            <h1 className="text-lg font-semibold tracking-tight">
-              SaaS Opportunity Engine
-            </h1>
-          </div>
-          <Button render={<Link href="/api/health" />} variant="outline" size="sm">
-            API Health
-          </Button>
-        </div>
-      </header>
-
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center gap-8 px-6 py-16">
         <div className="space-y-4">
           <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-            Sprint 0 foundation
+            Market intelligence
           </p>
-          <h2 className="max-w-2xl text-4xl font-semibold tracking-tight">
+          <h1 className="max-w-2xl text-4xl font-semibold tracking-tight">
             Turn scattered customer feedback into actionable market intelligence.
-          </h2>
+          </h1>
           <p className="max-w-2xl text-lg text-muted-foreground">
-            This repository is scaffolded for Next.js, TypeScript, Tailwind CSS,
-            shadcn/ui, and Prisma. Connect Supabase, OpenAI, and Stripe when you
-            are ready to build the MVP analysis workflow.
+            Import competitor reviews, extract repeated complaints and feature
+            requests, and see which opportunities are worth building — with
+            evidence, not vibes.
           </p>
         </div>
 
@@ -57,21 +41,15 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button render={<Link href="https://github.com/inavis-org/saas-opportunity-engine" />} nativeButton={false}>
-            View repository
+          <Button render={<Link href="/analysis/new" />} nativeButton={false}>
+            Start analysis
           </Button>
           <Button
-            render={
-              <a
-                href="https://github.com/inavis-org/saas-opportunity-engine/blob/main/market-intelligence/docs/PRD.md"
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
+            render={<Link href="/api/health" />}
             variant="outline"
             nativeButton={false}
           >
-            Read PRD
+            API Health
           </Button>
         </div>
       </main>

@@ -12,5 +12,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Install dependencies: `./scripts/cloud-agent-install.sh` (or `npm ci`)
 - Start dev server: `npm run dev -- --hostname 0.0.0.0 --port 3000`
-- Health check: `GET /api/health`
+- Health check: `GET /api/health` (JSON `data.status` is `"ok"` even if the database is unconfigured)
 - Product docs: `market-intelligence/docs/`
+- Setup (Vercel, MCP, Automations): `market-intelligence/docs/SETUP.md`
+- Parallel workstreams: `market-intelligence/docs/AGENT_WORKSTREAMS.md`
+
+## Cursor Cloud specific instructions
+
+- Do not wait for a Vercel production URL inside this VM. The public URL is created when the GitHub repo is imported in Vercel.
+- Demo the product at `/` (marketing), `/analysis/new` (import + report), and `/api/health`.
+- Heuristic analysis works without `OPENAI_API_KEY`. LLM analysis runs when that env var is set.
+- `DATABASE_URL` is optional for Cloud Agent boots. Persistence runs only when it is set.
+- Read `node_modules/next/dist/docs/` before changing Next.js APIs.
