@@ -35,4 +35,22 @@ export type AnalysisReport = {
   opportunityScore?: number;
   insights: AnalysisInsight[];
   reviewCount: number;
+  createdAt?: string;
+};
+
+export type PersistenceState = "enabled" | "disabled" | "error";
+
+export type AnalysisSummary = {
+  id: string;
+  title: string;
+  status: AnalysisStatus;
+  summary?: string;
+  opportunityScore?: number;
+  reviewCount: number;
+  createdAt: string;
+};
+
+export type AnalysisList = {
+  persistence: PersistenceState;
+  items: AnalysisSummary[];
 };

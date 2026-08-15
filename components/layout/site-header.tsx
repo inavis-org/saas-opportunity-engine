@@ -17,6 +17,9 @@ export function SiteHeader() {
           <Button render={<Link href="/dashboard" />} variant="ghost" size="sm" nativeButton={false}>
             Dashboard
           </Button>
+          <Button render={<Link href="/analysis" />} variant="ghost" size="sm" nativeButton={false}>
+            History
+          </Button>
           <Button render={<Link href="/analysis/new" />} variant="ghost" size="sm" nativeButton={false}>
             Analyze
           </Button>
