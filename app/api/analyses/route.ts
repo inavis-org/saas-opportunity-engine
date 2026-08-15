@@ -5,7 +5,7 @@ import { listAnalyses, saveAnalysis } from "@/lib/analysis/persistence";
 import { createAnalysisSchema } from "@/lib/ai/schemas";
 import { hasDatabaseUrl } from "@/lib/env";
 import { explainEmptyImport, normalizeReviewInput } from "@/lib/sources";
-import type { ApiResponse, AnalysisList, AnalysisReport } from "@/types";
+import type { ApiResponse, AnalysisList } from "@/types";
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q") ?? undefined;
