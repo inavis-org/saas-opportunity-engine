@@ -61,6 +61,7 @@ model Insight {
   description   String?
   frequency     Float?
   evidenceCount Int      @default(0)
+  evidence      Json?
   createdAt     DateTime @default(now())
   analysisId    String
   analysis      Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)

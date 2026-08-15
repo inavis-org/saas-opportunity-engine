@@ -2,7 +2,7 @@
 
 Parallel Cloud Agents must stay on isolated directories so Git merges stay cheap. `main` must remain deployable after every merge.
 
-Base branch for new work: `main` (or `cursor/wave0-deployable-main-25e7` until that PR is merged).
+Base branch for new work: `main`.
 
 Every agent:
 

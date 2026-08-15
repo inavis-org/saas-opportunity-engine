@@ -97,6 +97,9 @@ export default function NewAnalysisPage() {
         setError(json.error ?? "Analysis failed");
         return;
       }
+      if (json.error) {
+        setError(json.error);
+      }
       setReport(json.data);
     } catch {
       setError("Network error. Try again. Your pasted and uploaded reviews are still on this page.");
@@ -251,7 +254,23 @@ export default function NewAnalysisPage() {
         </div>
       ) : null}
 
-      {report ? <ReportView report={report} /> : null}
+      {report ? (
+        <div className="grid gap-4">
+          {report.id ? (
+            <p className="text-sm text-muted-foreground">
+              Saved to history.{" "}
+              <a className="font-medium text-foreground underline" href={`/analysis/${report.id}`}>
+                Open the saved report
+              </a>
+            </p>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              This report is not persisted. Configure DATABASE_URL to reopen it later from the dashboard.
+            </p>
+          )}
+          <ReportView report={report} />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -4,16 +4,18 @@ An AI-powered competitor intelligence platform for SaaS founders.
 
 **Production URL:** not assigned yet. Import this repo in Vercel (see [SETUP.md](market-intelligence/docs/SETUP.md)). After the first production deploy, replace this line with `https://<project>.vercel.app` and set the GitHub repo homepage to the same URL.
 
-## Parallel workstream PRs
+## Workstream PRs
 
-Merge [PR #4](https://github.com/inavis-org/saas-opportunity-engine/pull/4) first (this branch). Then merge feature PRs; rebase if they conflict.
+`#4` and `#5` are on `main`. Remaining feature PRs (`#6`–`#9`) are integrated in this Sprint 2 branch. A human merges to `main`.
 
 | Workstream | PR |
 | --- | --- |
-| Wave 0 deploy + MVP | [#4](https://github.com/inavis-org/saas-opportunity-engine/pull/4) |
-| AI pipeline | [#5](https://github.com/inavis-org/saas-opportunity-engine/pull/5) |
+| Wave 0 deploy + MVP | [#4](https://github.com/inavis-org/saas-opportunity-engine/pull/4) (merged) |
+| AI pipeline | [#5](https://github.com/inavis-org/saas-opportunity-engine/pull/5) (merged) |
 | Report UI | [#6](https://github.com/inavis-org/saas-opportunity-engine/pull/6) |
-| Review import, marketing, auth shell | Cloud Agents from this Wave 0 branch (draft PRs when they finish) |
+| Marketing | [#7](https://github.com/inavis-org/saas-opportunity-engine/pull/7) |
+| Review import | [#8](https://github.com/inavis-org/saas-opportunity-engine/pull/8) |
+| Auth shell | [#9](https://github.com/inavis-org/saas-opportunity-engine/pull/9) |
 
 ## Stack
 

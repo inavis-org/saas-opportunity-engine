@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { analyzeReviews } from "@/lib/ai/analyze-reviews";
+import { listAnalyses, saveAnalysis } from "@/lib/analysis/persistence";
 import { createAnalysisSchema } from "@/lib/ai/schemas";
 import { hasDatabaseUrl } from "@/lib/env";
 import { explainEmptyImport, normalizeReviewInput } from "@/lib/sources";
-import type { ApiResponse, AnalysisReport } from "@/types";
+import type { ApiResponse, AnalysisList, AnalysisReport } from "@/types";
+
+export async function GET(request: NextRequest) {
+  const query = request.nextUrl.searchParams.get("q") ?? undefined;
+  const list = await listAnalyses(query);
+  return NextResponse.json({ data: list, error: null } satisfies ApiResponse<AnalysisList>);
+}
 
 export async function POST(request: Request) {
   let json: unknown;
@@ -39,37 +47,7 @@ export async function POST(request: Request) {
 
   if (hasDatabaseUrl()) {
     try {
-      const { prisma } = await import("@/lib/db/prisma");
-      const saved = await prisma.analysis.create({
-        data: {
-          title: report.title,
-          status: report.status,
-          summary: report.summary,
-          opportunityScore: report.opportunityScore,
-          reviews: {
-            create: reviews.map((review) => ({
-              source: review.source,
-              externalId: review.externalId,
-              content: review.content,
-              rating: review.rating,
-              author: review.author,
-              publishedAt: review.publishedAt
-                ? new Date(review.publishedAt)
-                : undefined,
-            })),
-          },
-          insights: {
-            create: report.insights.map((insight) => ({
-              kind: insight.kind,
-              title: insight.title,
-              description: insight.description,
-              frequency: insight.frequency,
-              evidenceCount: insight.evidenceCount,
-            })),
-          },
-        },
-      });
-      const persisted: AnalysisReport = { ...report, id: saved.id };
+      const persisted = await saveAnalysis(report, reviews);
       return NextResponse.json({ data: persisted, error: null });
     } catch {
       return NextResponse.json({

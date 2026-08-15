@@ -1,7 +1,11 @@
+import { AnalysisList } from "@/components/analysis/analysis-list";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth";
+import { listAnalyses } from "@/lib/analysis/persistence";
 import type { Metadata } from "next";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -10,10 +14,6 @@ export const metadata: Metadata = {
 };
 
 const EMPTY_SECTIONS = [
-  {
-    title: "Recent analyses",
-    body: "Finished reports will land here once you run an analysis.",
-  },
   {
     title: "Watched competitors",
     body: "Saved competitors will appear after accounts land in Sprint 3.",
@@ -28,8 +28,10 @@ const EMPTY_SECTIONS = [
   },
 ] as const;
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   const user = getCurrentUser();
+  const list = await listAnalyses();
+  const recent = list.items.slice(0, 5);
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-6 py-12">
@@ -45,26 +47,20 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <div className="rounded-lg border p-6">
-        <p className="font-medium">You haven&apos;t analyzed a market yet.</p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Analyze a competitor to discover customer complaints, feature
-          requests, and potential opportunities. No login is required for this
-          step.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Button render={<Link href="/analysis/new" />} nativeButton={false}>
-            Start analysis
-          </Button>
-          <Button
-            render={<Link href="/login" />}
-            variant="outline"
-            nativeButton={false}
-          >
-            Sign in (coming soon)
+      <section className="grid gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-medium">Recent analyses</h2>
+          <Button render={<Link href="/analysis" />} variant="ghost" size="sm" nativeButton={false}>
+            View history
           </Button>
         </div>
-      </div>
+        <AnalysisList
+          items={recent}
+          persistence={list.persistence}
+          emptyTitle="You haven't analyzed a market yet."
+          emptyBody="Analyze a competitor to discover customer complaints, feature requests, and potential opportunities. No login is required for this step."
+        />
+      </section>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {EMPTY_SECTIONS.map((section) => (
